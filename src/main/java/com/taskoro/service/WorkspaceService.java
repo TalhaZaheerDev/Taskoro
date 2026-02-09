@@ -10,7 +10,7 @@ import java.util.List;
 public interface WorkspaceService {
     public WorkspaceResponse create(WorkspaceRequest workspaceRequest);
     public List<WorkspaceResponse> getAll();
-    public WorkspaceResponse getByID(Long id);
+    public WorkspaceResponse getById(Long id);
     public WorkspaceResponse update(Long id, WorkspaceRequest workspaceRequest);
     public void delete(Long id);
 }

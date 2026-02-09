@@ -34,7 +34,7 @@ public class WorkspaceServiceImplem implements WorkspaceService {
     }
 
     @Override
-    public WorkspaceResponse getByID(Long id) {
+    public WorkspaceResponse getById(Long id) {
         Workspace w=workspaceRepository.findById(id).orElseThrow(()->new RuntimeException("Workspace not found"));
         return modelMapper.map(w, WorkspaceResponse.class);
     }
