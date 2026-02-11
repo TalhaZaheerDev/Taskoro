@@ -14,4 +14,7 @@ public class TaskRequest {
     private String description;
     private Status status;
     private Priority priority;
+    private Long projectId;
+    private Long assignedUserId;
+
 }

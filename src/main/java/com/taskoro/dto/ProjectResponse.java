@@ -14,4 +14,5 @@ public class ProjectResponse {
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long workspaceId;
 }

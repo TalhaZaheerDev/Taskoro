@@ -22,12 +22,14 @@ public class Project {
     private String name;
 
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "workspace_id", nullable = false)
-//    private Workspace workspace;
-//
-//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Task> tasks=new ArrayList<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workspace_id", nullable = false)
+    private Workspace workspace;
+
+
+
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

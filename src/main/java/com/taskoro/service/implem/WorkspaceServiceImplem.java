@@ -2,10 +2,13 @@ package com.taskoro.service.implem;
 
 import com.taskoro.dto.WorkspaceRequest;
 import com.taskoro.dto.WorkspaceResponse;
+import com.taskoro.entity.User;
 import com.taskoro.entity.Workspace;
+import com.taskoro.repository.UserRepository;
 import com.taskoro.repository.WorkspaceRepository;
 import com.taskoro.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +19,19 @@ import java.util.List;
 public class WorkspaceServiceImplem implements WorkspaceService {
 
     private final WorkspaceRepository workspaceRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     @Override
     public WorkspaceResponse create(WorkspaceRequest workspaceRequest) {
-        Workspace workspace=modelMapper.map(workspaceRequest, Workspace.class);
+
+        User user=userRepository.findById(workspaceRequest.getUserId())
+                .orElseThrow(()-> new RuntimeException("User Not Found"));
+
+//        Workspace workspace=modelMapper.map(workspaceRequest, Workspace.class);
+        Workspace workspace=new Workspace();
+        workspace.setName(workspaceRequest.getName());
+        workspace.setUser(user);
         Workspace saved = workspaceRepository.save(workspace);
         return modelMapper.map(saved, WorkspaceResponse.class);
     }
@@ -41,9 +52,21 @@ public class WorkspaceServiceImplem implements WorkspaceService {
 
     @Override
     public WorkspaceResponse update(Long id, WorkspaceRequest workspaceRequest) {
-        Workspace w=workspaceRepository.findById(id).orElseThrow(() -> new RuntimeException( "Workspace not found"));
-        modelMapper.map(workspaceRequest, w);
-        Workspace updated=workspaceRepository.save(w);
+        Workspace ws=workspaceRepository.findById(id).orElseThrow(() -> new RuntimeException( "Workspace not found"));
+//        modelMapper.map(workspaceRequest, w);
+//        Workspace updated=workspaceRepository.save(w);
+
+        ws.setName(workspaceRequest.getName());
+
+        if(workspaceRequest.getUserId() != null){
+            User u = userRepository.findById(workspaceRequest.getUserId())
+                    .orElseThrow(() -> new RuntimeException( "User not found"));
+            ws.setUser(u);
+        }
+
+        Workspace updated = workspaceRepository.save(ws);
+
+
         return modelMapper.map(updated, WorkspaceResponse.class);
     }
 

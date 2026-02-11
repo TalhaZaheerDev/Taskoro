@@ -39,7 +39,9 @@ public class UserServiceImplem implements UserService {
         User user=userRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("user Not Found"));
 
-        modelMapper.map(userRequest, user);
+        user.setName(userRequest.getName());
+
+//        modelMapper.map(userRequest, user);
 
         User updated=userRepository.save(user);
         return modelMapper.map(updated, UserResponse.class);

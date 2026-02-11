@@ -9,4 +9,5 @@ import lombok.Setter;
 @Setter
 public class ProjectRequest {
     private String name;
+    private Long workspaceId;
 }

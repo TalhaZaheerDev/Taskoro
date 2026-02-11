@@ -14,4 +14,5 @@ public class WorkspaceResponse {
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long userId;
 }
