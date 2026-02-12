@@ -3,6 +3,7 @@ package com.taskoro.controller;
 import com.taskoro.dto.UserRequest;
 import com.taskoro.dto.UserResponse;
 import com.taskoro.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody UserRequest userRequest){
         return new ResponseEntity<>(userService.create(userRequest), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
@@ -33,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAll());
     }
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> update(@Valid @PathVariable Long id, @RequestBody UserRequest userRequest){
         return ResponseEntity.ok(userService.update(id, userRequest));
     }
 

@@ -4,6 +4,7 @@ import com.taskoro.dto.TaskRequest;
 import com.taskoro.dto.TaskResponse;
 import com.taskoro.entity.Task;
 import com.taskoro.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,7 +23,7 @@ public class TaskController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TaskResponse> create(@RequestBody TaskRequest taskRequest){
+    public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskRequest taskRequest){
         return new ResponseEntity<>(taskService.create(taskRequest), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
@@ -34,7 +35,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAll());
     }
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> update(@PathVariable Long id, @RequestBody TaskRequest taskRequest){
+    public ResponseEntity<TaskResponse> update(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest){
         return ResponseEntity.ok(taskService.update(id, taskRequest));
     }
 

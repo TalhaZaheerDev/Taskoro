@@ -4,6 +4,7 @@ import com.taskoro.dto.WorkspaceRequest;
 import com.taskoro.dto.WorkspaceResponse;
 import com.taskoro.entity.User;
 import com.taskoro.entity.Workspace;
+import com.taskoro.exception.ResourceNotFoundException;
 import com.taskoro.repository.UserRepository;
 import com.taskoro.repository.WorkspaceRepository;
 import com.taskoro.service.WorkspaceService;
@@ -26,7 +27,7 @@ public class WorkspaceServiceImplem implements WorkspaceService {
     public WorkspaceResponse create(WorkspaceRequest workspaceRequest) {
 
         User user=userRepository.findById(workspaceRequest.getUserId())
-                .orElseThrow(()-> new RuntimeException("User Not Found"));
+                .orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
 
 //        Workspace workspace=modelMapper.map(workspaceRequest, Workspace.class);
         Workspace workspace=new Workspace();
@@ -46,13 +47,13 @@ public class WorkspaceServiceImplem implements WorkspaceService {
 
     @Override
     public WorkspaceResponse getById(Long id) {
-        Workspace w=workspaceRepository.findById(id).orElseThrow(()->new RuntimeException("Workspace not found"));
+        Workspace w=workspaceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Workspace not found"));
         return modelMapper.map(w, WorkspaceResponse.class);
     }
 
     @Override
     public WorkspaceResponse update(Long id, WorkspaceRequest workspaceRequest) {
-        Workspace ws=workspaceRepository.findById(id).orElseThrow(() -> new RuntimeException( "Workspace not found"));
+        Workspace ws=workspaceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Workspace not found"));
 //        modelMapper.map(workspaceRequest, w);
 //        Workspace updated=workspaceRepository.save(w);
 
@@ -60,7 +61,7 @@ public class WorkspaceServiceImplem implements WorkspaceService {
 
         if(workspaceRequest.getUserId() != null){
             User u = userRepository.findById(workspaceRequest.getUserId())
-                    .orElseThrow(() -> new RuntimeException( "User not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException( "User not found"));
             ws.setUser(u);
         }
 
@@ -72,7 +73,7 @@ public class WorkspaceServiceImplem implements WorkspaceService {
 
     @Override
     public void delete(Long id) {
-        Workspace w=workspaceRepository.findById(id).orElseThrow(()->new RuntimeException("Workspace not found"));
+        Workspace w=workspaceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Workspace not found"));
         workspaceRepository.deleteById(id);
     }
 }

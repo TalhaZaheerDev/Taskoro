@@ -3,6 +3,7 @@ package com.taskoro.service.implem;
 import com.taskoro.dto.UserRequest;
 import com.taskoro.dto.UserResponse;
 import com.taskoro.entity.User;
+import com.taskoro.exception.ResourceNotFoundException;
 import com.taskoro.repository.UserRepository;
 import com.taskoro.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +32,13 @@ public class UserServiceImplem implements UserService {
     }
 
     public UserResponse getById(Long id){
-        User user=userRepository.findById(id).orElseThrow(()-> new RuntimeException("user Not Found"));
+        User user=userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user Not Found"));
         return modelMapper.map(user, UserResponse.class);
     }
 
     public UserResponse update(Long id, UserRequest userRequest){
         User user=userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("user Not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("user Not Found"));
 
         user.setName(userRequest.getName());
 
@@ -49,7 +50,7 @@ public class UserServiceImplem implements UserService {
 
     public void delete(Long id){
         User user=userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("user Not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("user Not Found"));
         userRepository.deleteById(id);
     }
 

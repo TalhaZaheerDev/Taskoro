@@ -6,6 +6,7 @@ import com.taskoro.dto.WorkspaceRequest;
 import com.taskoro.dto.WorkspaceResponse;
 import com.taskoro.entity.Project;
 import com.taskoro.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,13 +27,13 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponse> update(@PathVariable Long id, @RequestBody ProjectRequest Request){
+    public ResponseEntity<ProjectResponse> update(@Valid @PathVariable Long id, @RequestBody ProjectRequest Request){
         return ResponseEntity.ok(Service.update(id, Request));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectResponse> create(@RequestBody ProjectRequest Request){
+    public ResponseEntity<ProjectResponse> create(@Valid @RequestBody ProjectRequest Request){
         return new ResponseEntity<>(Service.create(Request), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")

@@ -4,6 +4,7 @@ import com.taskoro.dto.ProjectRequest;
 import com.taskoro.dto.ProjectResponse;
 import com.taskoro.entity.Project;
 import com.taskoro.entity.Workspace;
+import com.taskoro.exception.ResourceNotFoundException;
 import com.taskoro.repository.ProjectRepository;
 import com.taskoro.repository.WorkspaceRepository;
 import com.taskoro.service.ProjectService;
@@ -25,7 +26,7 @@ public class ProjectServiceImplem implements ProjectService {
 
         Workspace workspace=workspaceRepository
                 .findById(projectRequest.getWorkspaceId())
-                .orElseThrow(() -> new RuntimeException("Workspace not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Workspace not Found"));
 
 //        Project project = modelMapper.map(projectRequest, Project.class);
 
@@ -47,19 +48,19 @@ public class ProjectServiceImplem implements ProjectService {
 
     @Override
     public ProjectResponse getById(Long id) {
-        Project project=projectRepository.findById(id).orElseThrow(()->new RuntimeException("Project not found"));
+        Project project=projectRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Project not found"));
         return modelMapper.map(project, ProjectResponse.class);
     }
 
     @Override
     public ProjectResponse update(Long Id, ProjectRequest projectRequest) {
-        Project project=projectRepository.findById(Id).orElseThrow(()-> new RuntimeException("Project Not Found"));
+        Project project=projectRepository.findById(Id).orElseThrow(()-> new ResourceNotFoundException("Project Not Found"));
 //        modelMapper.map(projectRequest, project);
         project.setName(projectRequest.getName());
 
         if(projectRequest.getWorkspaceId() != null){
             Workspace ws = workspaceRepository.findById(projectRequest.getWorkspaceId())
-                    .orElseThrow(() -> new RuntimeException("Workspace not Found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Workspace not Found"));
             project.setWorkspace(ws);
         }
 
@@ -69,7 +70,7 @@ public class ProjectServiceImplem implements ProjectService {
 
     @Override
     public void delete(Long id) {
-        projectRepository.findById(id).orElseThrow(()-> new RuntimeException("Project Not Found"));
+        projectRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Project Not Found"));
         projectRepository.deleteById(id);
     }
 }

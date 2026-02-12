@@ -6,6 +6,7 @@ import com.taskoro.dto.WorkspaceRequest;
 import com.taskoro.dto.WorkspaceResponse;
 import com.taskoro.entity.Workspace;
 import com.taskoro.service.WorkspaceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,13 +29,13 @@ public class WorkspaceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WorkspaceResponse> update(@PathVariable Long id, @RequestBody WorkspaceRequest Request){
+    public ResponseEntity<WorkspaceResponse> update(@Valid @PathVariable Long id, @RequestBody WorkspaceRequest Request){
         return ResponseEntity.ok(Service.update(id, Request));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkspaceResponse> create(@RequestBody WorkspaceRequest Request){
+    public ResponseEntity<WorkspaceResponse> create(@Valid @RequestBody WorkspaceRequest Request){
         return new ResponseEntity<>(Service.create(Request), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")

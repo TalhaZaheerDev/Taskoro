@@ -5,6 +5,7 @@ import com.taskoro.dto.TaskResponse;
 import com.taskoro.entity.Project;
 import com.taskoro.entity.Task;
 import com.taskoro.entity.User;
+import com.taskoro.exception.ResourceNotFoundException;
 import com.taskoro.repository.ProjectRepository;
 import com.taskoro.repository.TaskRepository;
 import com.taskoro.repository.UserRepository;
@@ -28,11 +29,11 @@ public class TaskServiceImplem implements TaskService {
     public TaskResponse create(TaskRequest taskRequest){
 
         User user=userRepository.findById(taskRequest.getAssignedUserId())
-                .orElseThrow(()-> new RuntimeException("User not Found"));
+                .orElseThrow(()-> new ResourceNotFoundException("User not Found"));
 
 
         Project project=projectRepository.findById(taskRequest.getProjectId())
-                .orElseThrow(()-> new RuntimeException("Project not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Project not found"));
 
 //      Task task1=modelMapper.map(task, Task.class);
 
@@ -58,13 +59,13 @@ public class TaskServiceImplem implements TaskService {
     }
 
     public TaskResponse getById(Long id){
-        Task task=taskRepository.findById(id).orElseThrow(()-> new RuntimeException("Task Not Found"));
+        Task task=taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task Not Found"));
         return modelMapper.map(task, TaskResponse.class);
     }
 
     public TaskResponse update(Long id, TaskRequest request){
 //        Task task=taskRepository.findById(id)
-//                .orElseThrow(()->new RuntimeException("Task Not Found"));
+//                .orElseThrow(()->new ResourceNotFoundException("Task Not Found"));
 //
 //        modelMapper.map(taskRequest, task);
 //
@@ -72,7 +73,7 @@ public class TaskServiceImplem implements TaskService {
 //        return modelMapper.map(updated, TaskResponse.class);
 
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -82,14 +83,14 @@ public class TaskServiceImplem implements TaskService {
         // change project
         if(request.getProjectId() != null){
             Project project = projectRepository.findById(request.getProjectId())
-                    .orElseThrow(() -> new RuntimeException("Project not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
             task.setProject(project);
         }
 
         // change assigned user
         if(request.getAssignedUserId() != null){
             User user = userRepository.findById(request.getAssignedUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
             task.setAssignedUser(user);
         }
 
@@ -99,7 +100,7 @@ public class TaskServiceImplem implements TaskService {
 
     public void delete(Long id){
         Task task=taskRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Task Not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("Task Not Found"));
         taskRepository.deleteById(id);
     }
 
