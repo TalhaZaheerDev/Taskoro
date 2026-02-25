@@ -13,6 +13,8 @@ import com.taskoro.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.usertype.UserVersionType;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,11 +53,17 @@ public class TaskServiceImplem implements TaskService {
         return modelMapper.map(saved, TaskResponse.class);
     }
 
-    public List<TaskResponse> getAll(){
-        return taskRepository.findAll()
-                .stream()
-                .map(task -> modelMapper.map(task, TaskResponse.class))
-                .toList();
+//    public List<TaskResponse> getAll(){
+//        return taskRepository.findAll()
+//                .stream()
+//                .map(task -> modelMapper.map(task, TaskResponse.class))
+//                .toList();
+//    }
+
+
+    public Page<TaskResponse> getAll(Pageable pageable){
+        Page<Task> page =taskRepository.findAll(pageable);
+        return page.map(task -> modelMapper.map(task, TaskResponse.class));
     }
 
     public TaskResponse getById(Long id){

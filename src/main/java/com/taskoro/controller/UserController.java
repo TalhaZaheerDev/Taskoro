@@ -5,6 +5,8 @@ import com.taskoro.dto.UserResponse;
 import com.taskoro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getById(id));
     }
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAll(){
-        return ResponseEntity.ok(userService.getAll());
+    public ResponseEntity<Page<UserResponse>> getAll(Pageable pageable){
+        return ResponseEntity.ok(userService.getAll(pageable));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@Valid @PathVariable Long id, @RequestBody UserRequest userRequest){
         return ResponseEntity.ok(userService.update(id, userRequest));

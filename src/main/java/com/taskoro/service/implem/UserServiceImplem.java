@@ -8,6 +8,8 @@ import com.taskoro.repository.UserRepository;
 import com.taskoro.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +26,9 @@ public class UserServiceImplem implements UserService {
         return modelMapper.map(saved, UserResponse.class);
     }
 
-    public List<UserResponse> getAll(){
-        return userRepository.findAll()
-                .stream()
-                .map(user -> modelMapper.map(user, UserResponse.class))
-                .toList();
+    public Page<UserResponse> getAll(Pageable pageable){
+        Page<User> page=userRepository.findAll(pageable);
+        return page.map(user -> modelMapper.map(user, UserResponse.class));
     }
 
     public UserResponse getById(Long id){

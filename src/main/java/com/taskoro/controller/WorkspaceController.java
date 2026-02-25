@@ -8,6 +8,8 @@ import com.taskoro.entity.Workspace;
 import com.taskoro.service.WorkspaceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class WorkspaceController {
 
 
     @GetMapping
-    public ResponseEntity<List<WorkspaceResponse>> getAll(){
-        return ResponseEntity.ok(Service.getAll());
+    public ResponseEntity<Page<WorkspaceResponse>> getAll(Pageable pageable){
+        return ResponseEntity.ok(Service.getAll(pageable));
     }
 
     @PutMapping("/{id}")

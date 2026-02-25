@@ -6,11 +6,11 @@ import com.taskoro.entity.Task;
 import com.taskoro.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,10 +30,12 @@ public class TaskController {
     public ResponseEntity<TaskResponse> getById(@PathVariable Long id){
         return ResponseEntity.ok(taskService.getById(id));
     }
+
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> getAll(){
-        return ResponseEntity.ok(taskService.getAll());
+    public ResponseEntity<Page<TaskResponse>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(taskService.getAll(pageable));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> update(@Valid @PathVariable Long id, @RequestBody TaskRequest taskRequest){
         return ResponseEntity.ok(taskService.update(id, taskRequest));

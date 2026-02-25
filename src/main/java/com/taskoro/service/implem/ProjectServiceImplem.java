@@ -10,6 +10,8 @@ import com.taskoro.repository.WorkspaceRepository;
 import com.taskoro.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,11 +41,9 @@ public class ProjectServiceImplem implements ProjectService {
     }
 
     @Override
-    public List<ProjectResponse> getAll() {
-        return projectRepository.findAll()
-                .stream()
-                .map(project -> modelMapper.map(project, ProjectResponse.class))
-                .toList();
+    public Page<ProjectResponse> getAll(Pageable pageable) {
+       Page<Project> page=projectRepository.findAll(pageable);
+       return page.map(project -> modelMapper.map(project, ProjectResponse.class));
     }
 
     @Override

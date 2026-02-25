@@ -11,6 +11,8 @@ import com.taskoro.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,11 +40,9 @@ public class WorkspaceServiceImplem implements WorkspaceService {
     }
 
     @Override
-    public List<WorkspaceResponse> getAll() {
-        return workspaceRepository.findAll()
-                .stream()
-                .map(workspace -> modelMapper.map(workspace, WorkspaceResponse.class))
-                .toList();
+    public Page<WorkspaceResponse> getAll(Pageable pageable) {
+        Page<Workspace> page= workspaceRepository.findAll(pageable);
+        return page.map(workspace -> modelMapper.map(workspace, WorkspaceResponse.class));
     }
 
     @Override

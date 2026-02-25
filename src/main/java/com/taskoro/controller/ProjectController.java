@@ -8,6 +8,8 @@ import com.taskoro.entity.Project;
 import com.taskoro.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ public class ProjectController {
     private final ProjectService Service;
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponse>> getAll(){
-        return ResponseEntity.ok(Service.getAll());
+    public ResponseEntity<Page<ProjectResponse>> getAll(Pageable pageable){
+        return ResponseEntity.ok(Service.getAll(pageable));
     }
 
     @PutMapping("/{id}")
